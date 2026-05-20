@@ -1,0 +1,15 @@
+# Hệ thống / tạm
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+
+# Tài liệu nội bộ — KHÔNG public (ghi âm, bảng lương, JD, brief nguồn)
+mô tả/
+*.MP3
+*.mp3
+*.xlsx
+*.xls
+*.docx
+*.doc
+kita-landing-*.md
