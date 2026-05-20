@@ -1,18 +1,14 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<!-- Meta Pixel Code -->
+<!-- Meta Pixel Code (deferred load -> giảm TBT) -->
 <script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '2005041217056015');
-fbq('track', 'PageView');
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];
+var ld=false;function loadFb(){if(ld)return;ld=true;t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s);}
+['scroll','mousemove','touchstart','keydown','click'].forEach(function(ev){window.addEventListener(ev,loadFb,{once:true,passive:true});});setTimeout(loadFb,3500);
+}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','2005041217056015');
+fbq('track','PageView');
 </script>
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2005041217056015&ev=PageView&noscript=1"/></noscript>
 <!-- End Meta Pixel Code -->
@@ -98,8 +94,9 @@ section{padding:var(--section-padding) 0}
 .img-placeholder.light{background:repeating-linear-gradient(45deg,rgba(22,38,63,.03),rgba(22,38,63,.03) 12px,rgba(22,38,63,.06) 12px,rgba(22,38,63,.06) 24px);border-color:var(--color-border);color:var(--color-text-muted)}
 .img-placeholder.light .ph-title{color:var(--color-primary)}
 .img-placeholder.light .ph-spec{color:var(--color-text-muted)}
-.hero-media{aspect-ratio:1/1;overflow:hidden}
-.hero-yt{width:100%;height:100%;border:0;border-radius:var(--radius);display:block;background:#16263F}
+.hero-media{aspect-ratio:1/1;overflow:hidden;position:relative}
+.hero-yt{position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:var(--radius);display:block;background:#16263F}
+.hero-poster{width:100%;height:100%;object-fit:cover;display:block;border-radius:var(--radius)}
 
 /* Section heads */
 .section-head{max-width:58rem;margin-bottom:2.6rem}
@@ -193,6 +190,11 @@ section{padding:var(--section-padding) 0}
 .video-wrap{max-width:880px;margin:0 auto}
 .video-live{display:flex;gap:clamp(1.5rem,4vw,2.6rem);align-items:center;justify-content:center;flex-wrap:wrap}
 .video-frame-live{width:460px;max-width:92vw;aspect-ratio:1/1;border:0;border-radius:18px;background:#000;box-shadow:var(--shadow);display:block}
+.video-facade{padding:0;cursor:pointer;overflow:hidden;position:relative}
+.video-facade img{width:100%;height:100%;object-fit:cover;display:block}
+.video-facade .play-ico{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:68px;height:68px;border-radius:50%;background:rgba(15,28,48,.65);display:flex;align-items:center;justify-content:center;transition:background .2s ease,transform .2s ease}
+.video-facade:hover .play-ico{background:var(--color-accent);transform:translate(-50%,-50%) scale(1.06)}
+.video-facade .play-ico::after{content:"";border-style:solid;border-width:11px 0 11px 18px;border-color:transparent transparent transparent #fff;margin-left:4px}
 .video-live .video-points{grid-template-columns:1fr;max-width:360px;margin-top:0}
 .video-points{display:grid;grid-template-columns:repeat(2,1fr);gap:.9rem;margin-top:1.8rem}
 .video-points li{list-style:none;display:flex;gap:.6rem;font-size:.96rem;color:rgba(243,236,220,.88)}
@@ -376,8 +378,8 @@ section{padding:var(--section-padding) 0}
           <span class="hero-badge">5 ngày văn phòng + 1 ngày online</span>
         </div>
       </div>
-      <div class="hero-media">
-        <iframe class="hero-yt" src="https://www.youtube.com/embed/h56yETzqmAc?autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=h56yETzqmAc&amp;controls=0&amp;modestbranding=1&amp;rel=0&amp;playsinline=1&amp;disablekb=1&amp;fs=0&amp;iv_load_policy=3" title="Video tuyển dụng KITA BOOKS" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+      <div class="hero-media" id="heroMedia" data-yt="h56yETzqmAc">
+        <img class="hero-poster" src="poster-hero.jpg" alt="Video tuyển dụng KITA BOOKS" width="720" height="720" fetchpriority="high">
       </div>
     </div>
   </div>
@@ -555,7 +557,7 @@ section{padding:var(--section-padding) 0}
       <h2>Trước khi nộp CV, bạn nên nhìn thấy con người và không gian ở Kita</h2>
     </div>
     <div class="video-wrap reveal video-live">
-      <iframe class="video-frame-live" src="https://www.youtube.com/embed/LzCl0ktTWI0?rel=0&amp;modestbranding=1&amp;playsinline=1" title="Video nơi làm việc tại KITA BOOKS" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+      <button class="video-frame-live video-facade" id="secVideo" type="button" data-yt="LzCl0ktTWI0" aria-label="Phát video nơi làm việc tại KITA BOOKS"><img src="poster-section.jpg" alt="Video nơi làm việc tại KITA BOOKS" width="720" height="720" loading="lazy"><span class="play-ico" aria-hidden="true"></span></button>
     </div>
   </div>
 </section>
@@ -1045,6 +1047,32 @@ section{padding:var(--section-padding) 0}
   }
   window.addEventListener('scroll', checkScrollDepth, { passive: true });
   checkScrollDepth();
+
+  /* ===================== MODULE: Tối ưu video (defer Hero + facade Section) ===================== */
+  window.addEventListener('load', function(){
+    var go=function(){
+      var hm=document.getElementById('heroMedia'); if(!hm || hm.querySelector('iframe')) return;
+      var id=hm.getAttribute('data-yt');
+      var ifr=document.createElement('iframe');
+      ifr.className='hero-yt'; ifr.title='Video tuyển dụng KITA BOOKS';
+      ifr.src='https://www.youtube.com/embed/'+id+'?autoplay=1&mute=1&loop=1&playlist='+id+'&controls=0&modestbranding=1&rel=0&playsinline=1&disablekb=1&fs=0&iv_load_policy=3';
+      ifr.setAttribute('frameborder','0');
+      ifr.setAttribute('allow','autoplay; encrypted-media; picture-in-picture');
+      hm.appendChild(ifr);
+    };
+    if('requestIdleCallback' in window){ requestIdleCallback(go,{timeout:2500}); } else { setTimeout(go,900); }
+  });
+  var sec=document.getElementById('secVideo');
+  if(sec){ sec.addEventListener('click', function(){
+    var id=sec.getAttribute('data-yt');
+    var ifr=document.createElement('iframe');
+    ifr.className='video-frame-live'; ifr.title='Video nơi làm việc tại KITA BOOKS';
+    ifr.src='https://www.youtube.com/embed/'+id+'?autoplay=1&rel=0&modestbranding=1&playsinline=1';
+    ifr.setAttribute('frameborder','0');
+    ifr.setAttribute('allow','autoplay; encrypted-media; picture-in-picture');
+    ifr.setAttribute('allowfullscreen','');
+    sec.parentNode.replaceChild(ifr, sec);
+  }); }
 
 })();
 </script>
