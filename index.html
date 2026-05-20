@@ -289,6 +289,10 @@ section{padding:var(--section-padding) 0}
 .apply-success .as-sub{font-size:.9rem}
 .apply-success .as-sub strong{color:var(--color-primary)}
 
+/* nút loading - đồng hồ cát */
+.btn-hourglass{display:inline-block;animation:hgflip .9s ease-in-out infinite alternate;font-size:1.05em}
+@keyframes hgflip{from{transform:rotate(0)}to{transform:rotate(180deg)}}
+
 /* toast */
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(180%);opacity:0;visibility:hidden;background:var(--color-trust);color:#fff;padding:1rem 1.5rem;border-radius:14px;font-weight:600;box-shadow:0 18px 40px -12px rgba(0,0,0,.4);z-index:300;transition:transform .4s cubic-bezier(.2,.8,.2,1),opacity .3s ease,visibility .3s ease;max-width:90vw;text-align:center}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1;visibility:visible}
@@ -964,7 +968,7 @@ section{padding:var(--section-padding) 0}
 
     var btn = form.querySelector('button[type="submit"]');
     var original = btn.innerHTML;
-    btn.disabled = true; btn.innerHTML = 'Đang gửi hồ sơ…';
+    btn.disabled = true; btn.innerHTML = '<span class="btn-hourglass">⏳</span> Đang gửi hồ sơ…';
 
     // event ID cho deduplication Pixel <-> CAPI
     var eventId = 'reg_' + Date.now() + '_' + Math.random().toString(36).substring(2, 9);
