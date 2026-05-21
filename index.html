@@ -274,6 +274,7 @@ section{padding:var(--section-padding) 0}
 .field{margin-bottom:1.05rem}
 .field label{display:block;font-weight:600;font-size:.9rem;margin-bottom:.35rem;color:var(--color-primary)}
 .field label .req{color:#c0392b}
+.field label .opt{color:var(--color-text-muted);font-weight:400;font-size:.85em}
 .field input,.field textarea,.field select{width:100%;font-family:var(--font-body);font-size:1rem;padding:.85rem 1rem;border:1.5px solid var(--color-border);border-radius:12px;background:#fff;color:var(--color-text);transition:border-color .15s ease}
 .field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--color-accent);box-shadow:0 0 0 3px rgba(200,146,58,.18)}
 .field textarea{resize:vertical;min-height:74px}
@@ -775,10 +776,9 @@ section{padding:var(--section-padding) 0}
             <span class="err">Email chưa đúng định dạng.</span>
           </div>
           <div class="field" id="f-cv">
-            <label>Upload CV <span class="req">*</span></label>
-            <input type="file" name="cv" accept=".pdf,.doc,.docx">
-            <span class="hint">Định dạng PDF / DOC / DOCX.</span>
-            <span class="err">Vui lòng đính kèm CV của bạn.</span>
+            <label>Upload CV <span class="opt">(không bắt buộc)</span></label>
+            <input type="file" name="cv" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+            <span class="hint">Nếu đang xem trong Facebook hoặc khó tải file trên điện thoại, cứ để trống và gửi hồ sơ. HR sẽ liên hệ Zalo theo số bạn nhập để nhận CV.</span>
           </div>
           <div class="field" id="f-portfolio">
             <label>Upload Portfolio (Hồ sơ năng lực)</label>
@@ -987,13 +987,12 @@ section{padding:var(--section-padding) 0}
     var cvFile   = field('#f-cv input').files[0];
     var pfFile   = field('#f-portfolio input').files[0];
 
-    // Validate: Họ tên, Email, SĐT (9-11 số), CV bắt buộc
+    // Validate: Họ tên, Email, SĐT (9-11 số). CV KHÔNG bắt buộc (nhiều ứng viên xem trong app FB không tải được file -> HR xin CV qua Zalo).
     var ok = true;
     if(fullname.length < 2){ setInvalid('f-name', true); ok=false; } else setInvalid('f-name', false);
     var phoneDigits = phone.replace(/\D/g,'');
     if(phoneDigits.length < 9 || phoneDigits.length > 11){ setInvalid('f-phone', true); ok=false; } else setInvalid('f-phone', false);
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ setInvalid('f-email', true); ok=false; } else setInvalid('f-email', false);
-    if(!cvFile){ setInvalid('f-cv', true); ok=false; } else setInvalid('f-cv', false);
     if(!ok){ var fb = form.querySelector('.field.invalid input, .field.invalid select, .field.invalid textarea'); if(fb) fb.focus(); return; }
 
     var btn = form.querySelector('button[type="submit"]');
@@ -1004,7 +1003,7 @@ section{padding:var(--section-padding) 0}
     var eventId = 'reg_' + Date.now() + '_' + Math.random().toString(36).substring(2, 9);
 
     try {
-      var cv = await uploadFile(cvFile, 'cv-files');
+      var cv = cvFile ? await uploadFile(cvFile, 'cv-files') : null;
       var portfolioFiles = [];
       if(pfFile){ portfolioFiles.push(await uploadFile(pfFile, 'portfolio-files')); }
 
@@ -1013,9 +1012,9 @@ section{padding:var(--section-padding) 0}
         phone: phone,
         email: email,
         source: source,
-        hr_note: goals,
-        cv_url: cv.url,
-        cv_filename: cv.name,
+        hr_note: goals + (cvFile ? '' : ' [Ứng viên chưa đính kèm CV — liên hệ Zalo/SĐT để xin CV]'),
+        cv_url: cv ? cv.url : '',
+        cv_filename: cv ? cv.name : '',
         portfolio_files: portfolioFiles,
         meta_event_id: eventId,
         meta_fbp: getCookie('_fbp'),
