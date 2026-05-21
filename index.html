@@ -442,15 +442,15 @@ section{padding:var(--section-padding) 0}
       <div class="pcard">
         <div class="ptag">P1 <small>An toàn</small></div>
         <h3>Lương cứng</h3>
-        <div class="pamount">7 – 9 triệu</div>
-        <p class="pdesc">Trả theo ngày công, đảm bảo bạn sống ổn định. Junior chia bậc, ví dụ Bậc 2 = 8.000.000đ.</p>
+        <div class="pamount">10 triệu</div>
+        <p class="pdesc">Trả theo ngày công, đảm bảo bạn sống ổn định bất kể doanh số trong tháng.</p>
         <div class="pfeat">✓ Chắc chắn, không rủi ro</div>
       </div>
       <div class="pcard">
         <div class="ptag">P2 <small>Công sức – công bằng</small></div>
         <h3>Lương KPI</h3>
-        <div class="pamount">2 – 3 triệu</div>
-        <p class="pdesc">= % hoàn thành chỉ tiêu × KPI tiêu chuẩn (Fresher 2tr / Junior 3tr). Làm đủ, nhận đủ.</p>
+        <div class="pamount">5 triệu</div>
+        <p class="pdesc">= % hoàn thành chỉ tiêu × KPI tiêu chuẩn (5 triệu). Làm đủ, nhận đủ.</p>
         <div class="pfeat">✓ Rõ ràng, đo lường được</div>
       </div>
       <div class="pcard pcard--p3">
@@ -466,7 +466,7 @@ section{padding:var(--section-padding) 0}
     <div class="calc reveal">
       <span class="calc-tag">⚡ Tự tính thu nhập của bạn</span>
       <h3>Kéo thanh trượt: xem thu nhập tăng theo doanh thu bạn tạo ra</h3>
-      <p class="calc-intro">Đây không phải lời hứa suông, mà là <b>công thức thật</b> trong bảng lương 3P của Kita. Mục tiêu định mức: <b>300 triệu/tháng</b>. Ví dụ minh hoạ theo bậc Junior 2 (lương cứng 8tr, KPI 3tr, hoàn thành 100% KPI).</p>
+      <p class="calc-intro">Đây không phải lời hứa suông, mà là <b>công thức thật</b> trong bảng lương 3P của Kita. Mục tiêu định mức: <b>300 triệu/tháng</b>. Ví dụ minh hoạ theo bậc Junior (lương cứng 10tr, KPI 5tr, hoàn thành 100% KPI).</p>
       <div class="calc-grid">
         <div class="calc-control">
           <label for="revSlider">Doanh thu bạn tạo ra trong tháng</label>
@@ -483,19 +483,19 @@ section{padding:var(--section-padding) 0}
         </div>
         <div class="calc-result">
           <ul class="calc-breakdown">
-            <li><span>P1 · Lương cứng</span><b>8.000.000đ</b></li>
-            <li><span>P2 · KPI thưởng</span><b>3.000.000đ</b></li>
+            <li><span>P1 · Lương cứng</span><b>10.000.000đ</b></li>
+            <li><span>P2 · KPI thưởng</span><b>5.000.000đ</b></li>
             <li class="p3"><span>P3 · Hoa hồng (tỷ lệ <span id="ckInline">1,68%</span>)</span><b id="p3Val">6.048.000đ</b></li>
             <li><span>Phụ cấp ăn trưa</span><b>500.000đ</b></li>
           </ul>
           <div class="calc-total">
             <span class="lbl">Tổng thu nhập tháng này</span>
-            <span class="val" id="totalVal">17.648.000đ</span>
+            <span class="val" id="totalVal">21.548.000đ</span>
           </div>
           <div class="calc-quickrow">
-            <span>Đạt mục tiêu 300tr → <b>15,7tr</b></span>
-            <span>Vượt 600tr → <b>28,3tr</b></span>
-            <span>Bứt phá 1 tỷ → <b>58tr</b></span>
+            <span>Đạt mục tiêu 300tr → <b>19,7tr</b></span>
+            <span>Vượt 600tr → <b>32,3tr</b></span>
+            <span>Bứt phá 1 tỷ → <b>62tr</b></span>
           </div>
         </div>
       </div>
@@ -560,7 +560,7 @@ section{padding:var(--section-padding) 0}
       <div class="ms"><b>14–21</b><span>bài viết / tuần</span></div>
       <div class="ms"><b>10–14</b><span>video ngắn / tuần</span></div>
       <div class="ms"><b>3–5</b><span>video dài / tuần</span></div>
-      <div class="ms"><b>≤ 35%</b><span>chi phí ads / doanh thu</span></div>
+      <div class="ms"><b>≤ 30%</b><span>chi phí ads / doanh thu</span></div>
     </div>
 
     <div class="channels reveal">
@@ -859,7 +859,7 @@ section{padding:var(--section-padding) 0}
   /* ---------- 3P Income Calculator - công thức Hns thật ---------- */
   var DT_DINH_MUC = 300000000;   // mục tiêu doanh thu/tháng
   var CK_QUY_CHUAN = 0.014;      // % chiết khấu khi Hns = 1 (1,4%)
-  var LC = 8000000, KPI = 3000000, ALLOWANCE = 500000; // ví dụ Junior bậc 2, KPI 100%
+  var LC = 10000000, KPI = 5000000, ALLOWANCE = 500000; // ví dụ Junior, KPI 100%
 
   var slider = document.getElementById('revSlider');
   var revDisplay = document.getElementById('revDisplay');
