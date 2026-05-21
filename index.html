@@ -1075,19 +1075,16 @@ section{padding:var(--section-padding) 0}
   checkScrollDepth();
 
   /* ===================== MODULE: Tối ưu video (defer Hero + facade Section) ===================== */
-  window.addEventListener('load', function(){
-    var go=function(){
-      var hm=document.getElementById('heroMedia'); if(!hm || hm.querySelector('iframe')) return;
-      var id=hm.getAttribute('data-yt');
-      var ifr=document.createElement('iframe');
-      ifr.className='hero-yt'; ifr.title='Video tuyển dụng KITA BOOKS';
-      ifr.src='https://www.youtube.com/embed/'+id+'?autoplay=1&mute=1&loop=1&playlist='+id+'&controls=0&modestbranding=1&rel=0&playsinline=1&disablekb=1&fs=0&iv_load_policy=3';
-      ifr.setAttribute('frameborder','0');
-      ifr.setAttribute('allow','autoplay; encrypted-media; picture-in-picture');
-      hm.appendChild(ifr);
-    };
-    if('requestIdleCallback' in window){ requestIdleCallback(go,{timeout:2500}); } else { setTimeout(go,900); }
-  });
+  (function(){
+    var hm=document.getElementById('heroMedia'); if(!hm || hm.querySelector('iframe')) return;
+    var id=hm.getAttribute('data-yt');
+    var ifr=document.createElement('iframe');
+    ifr.className='hero-yt'; ifr.title='Video tuyển dụng KITA BOOKS';
+    ifr.src='https://www.youtube.com/embed/'+id+'?autoplay=1&mute=1&loop=1&playlist='+id+'&controls=0&modestbranding=1&rel=0&playsinline=1&disablekb=1&fs=0&iv_load_policy=3';
+    ifr.setAttribute('frameborder','0');
+    ifr.setAttribute('allow','autoplay; encrypted-media; picture-in-picture');
+    hm.appendChild(ifr);
+  })();
   var sec=document.getElementById('secVideo');
   if(sec){ sec.addEventListener('click', function(){
     var id=sec.getAttribute('data-yt');
