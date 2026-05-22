@@ -102,9 +102,12 @@ section{padding:var(--section-padding) 0}
 .img-placeholder.light{background:repeating-linear-gradient(45deg,rgba(22,38,63,.03),rgba(22,38,63,.03) 12px,rgba(22,38,63,.06) 12px,rgba(22,38,63,.06) 24px);border-color:var(--color-border);color:var(--color-text-muted)}
 .img-placeholder.light .ph-title{color:var(--color-primary)}
 .img-placeholder.light .ph-spec{color:var(--color-text-muted)}
-.hero-media{aspect-ratio:1/1;overflow:hidden;position:relative}
-.hero-yt{position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:var(--radius);display:block;background:#16263F}
+.hero-media-wrap{position:relative}
+.hero-media{aspect-ratio:1/1;overflow:hidden;position:relative;cursor:pointer;border-radius:var(--radius)}
+.hero-yt{position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:var(--radius);display:block;background:#16263F;z-index:3}
 .hero-poster{width:100%;height:100%;object-fit:cover;display:block;border-radius:var(--radius)}
+.hero-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:62px;height:62px;border-radius:50%;background:rgba(200,146,58,.94);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 22px rgba(0,0,0,.4);pointer-events:none;z-index:2}
+.hero-media-cap{display:none}
 
 /* Section heads */
 .section-head{max-width:58rem;margin-bottom:2.6rem}
@@ -351,8 +354,8 @@ section{padding:var(--section-padding) 0}
   .roadmap{grid-template-columns:1fr 1fr}
   .metrics-strip{grid-template-columns:1fr 1fr}
   .metrics-strip .ms:nth-child(2){border-right:none}
-  .hero-media{aspect-ratio:1/1;order:-1;max-width:420px;margin:0 auto}
-  .hero-media .img-placeholder{min-height:200px}
+  .hero-media-wrap{order:2;max-width:300px;margin:1.5rem auto 0}
+  .hero-media-cap{display:block;text-align:center;font-size:.82rem;color:rgba(243,236,220,.78);margin:.65rem auto 0;max-width:300px}
 }
 @media(max-width:560px){
   body{font-size:16px}
@@ -396,8 +399,12 @@ section{padding:var(--section-padding) 0}
           <span class="hero-badge">5 ngày văn phòng + 1 ngày online</span>
         </div>
       </div>
-      <div class="hero-media" id="heroMedia" data-yt="h56yETzqmAc">
-        <img class="hero-poster" src="assets/img/poster-hero.jpg" alt="Video tuyển dụng KITA BOOKS" width="720" height="720" fetchpriority="high">
+      <div class="hero-media-wrap">
+        <div class="hero-media" id="heroMedia" data-yt="h56yETzqmAc" role="button" tabindex="0" aria-label="Phát video tuyển dụng 60 giây">
+          <img class="hero-poster" src="assets/img/poster-hero.jpg" alt="Video tuyển dụng KITA BOOKS" width="720" height="720" loading="lazy">
+          <span class="hero-play" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></span>
+        </div>
+        <span class="hero-media-cap">▶ Bấm xem video 60 giây về công việc &amp; văn hoá tại KITA</span>
       </div>
     </div>
   </div>
@@ -1075,14 +1082,26 @@ section{padding:var(--section-padding) 0}
 
   /* ===================== MODULE: Tối ưu video (defer Hero + facade Section) ===================== */
   (function(){
-    var hm=document.getElementById('heroMedia'); if(!hm || hm.querySelector('iframe')) return;
+    var hm=document.getElementById('heroMedia'); if(!hm) return;
     var id=hm.getAttribute('data-yt');
-    var ifr=document.createElement('iframe');
-    ifr.className='hero-yt'; ifr.title='Video tuyển dụng KITA BOOKS';
-    ifr.src='https://www.youtube.com/embed/'+id+'?autoplay=1&mute=1&loop=1&playlist='+id+'&controls=0&modestbranding=1&rel=0&playsinline=1&disablekb=1&fs=0&iv_load_policy=3';
-    ifr.setAttribute('frameborder','0');
-    ifr.setAttribute('allow','autoplay; encrypted-media; picture-in-picture');
-    hm.appendChild(ifr);
+    function loadHero(params){
+      if(hm.querySelector('iframe')) return;
+      var ifr=document.createElement('iframe');
+      ifr.className='hero-yt'; ifr.title='Video tuyển dụng KITA BOOKS';
+      ifr.src='https://www.youtube.com/embed/'+id+'?'+params;
+      ifr.setAttribute('frameborder','0');
+      ifr.setAttribute('allow','autoplay; encrypted-media; picture-in-picture');
+      ifr.setAttribute('allowfullscreen','');
+      hm.appendChild(ifr);
+    }
+    /* Desktop: tự chạy nền (mute, loop). Mobile/in-app: hiện poster, bấm mới phát (vì in-app FB/IG chặn autoplay). */
+    if(window.matchMedia('(min-width:881px)').matches){
+      loadHero('autoplay=1&mute=1&loop=1&playlist='+id+'&controls=0&modestbranding=1&rel=0&playsinline=1&disablekb=1&fs=0&iv_load_policy=3');
+    } else {
+      var play=function(){ loadHero('autoplay=1&rel=0&modestbranding=1&playsinline=1'); };
+      hm.addEventListener('click', play);
+      hm.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); play(); } });
+    }
   })();
   var sec=document.getElementById('secVideo');
   if(sec){ sec.addEventListener('click', function(){
